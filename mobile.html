@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="pt-BR">
+  <head>
+    <meta charset="utf-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, viewport-fit=cover"
+    />
+    <meta name="color-scheme" content="light dark" />
+    <meta
+      name="theme-color"
+      content="#e9e1d3"
+      media="(prefers-color-scheme: light)"
+    />
+    <meta
+      name="theme-color"
+      content="#1c1a17"
+      media="(prefers-color-scheme: dark)"
+    />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-title" content="MetaView" />
+    <title>MetaView</title>
+    <link rel="manifest" href="manifest.webmanifest" />
+    <link rel="icon" href="icons/icon-192.png" />
+    <link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="default" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;500&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Mesmos arquivos da versão desktop, sem alterações -->
+    <link rel="stylesheet" href="styles.css" />
+    <!-- Ajustes exclusivos do celular (carrega por último) -->
+    <link rel="stylesheet" href="mobile.css" />
+  </head>
+  <body>
+    <nav id="nav" aria-label="Principal"></nav>
+    <main id="app" tabindex="-1"></main>
+    <nav id="bn" aria-label="Principal"></nav>
+    <dialog id="dlg"></dialog>
+    <script src="app.js"></script>
+    <script>
+      // Habilita o uso offline (não roda dentro do app nativo nem em file://)
+      if (
+        "serviceWorker" in navigator &&
+        !window.Capacitor &&
+        location.protocol.startsWith("http")
+      ) {
+        addEventListener("load", () =>
+          navigator.serviceWorker.register("sw.js").catch(() => {}),
+        );
+      }
+    </script>
+  </body>
+</html>

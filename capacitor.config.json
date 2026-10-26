@@ -1,0 +1,6 @@
+{
+  "appId": "br.com.metaview.app",
+  "appName": "MetaView",
+  "webDir": "www",
+  "server": { "androidScheme": "https" }
+}
