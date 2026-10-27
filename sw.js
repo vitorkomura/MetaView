@@ -1,6 +1,6 @@
 /* MetaView — service worker: depois da primeira visita o app abre mesmo sem internet.
    Ao publicar uma nova versão dos arquivos, troque o número em CACHE (v1 -> v2). */
-const CACHE = "metaview-v4";
+const CACHE = "metaview-v6";
 const ARQUIVOS = [
   "./mobile.html",
   "./styles.css",
@@ -9,6 +9,7 @@ const ARQUIVOS = [
   "./config.js",
   "./cloud.js",
   "./extras.js",
+  "./assistant.js",
   "./extras.css",
   "./manifest.webmanifest",
   "./icons/icon-192.png",

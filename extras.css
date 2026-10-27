@@ -142,3 +142,168 @@
   padding: 8px 0 0;
   min-height: 0;
 }
+.b {
+  max-width: 88%;
+  padding: 10px 14px;
+  border-radius: 16px;
+  font-size: 14.5px;
+  line-height: 1.5;
+  overflow-wrap: anywhere;
+}
+.b.user {
+  align-self: flex-end;
+  background: var(--ac);
+  color: var(--on);
+}
+.b.assistant {
+  align-self: flex-start;
+  background: var(--bg);
+}
+.b.pending {
+  opacity: 0.6;
+}
+.chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.chips button {
+  font-size: 13px;
+  padding: 6px 12px;
+  min-height: 0;
+}
+/* Assistente: bolinha no canto inferior direito + painel flutuante */
+main {
+  padding-bottom: 88px;
+}
+#aib {
+  position: fixed;
+  right: 16px;
+  bottom: calc(16px + env(safe-area-inset-bottom, 0px));
+  z-index: 4;
+  width: 46px;
+  height: 46px;
+  min-height: 0;
+  padding: 0;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: var(--ac);
+  color: var(--on);
+  box-shadow: 0 4px 14px #0003;
+  opacity: 0.9;
+  transition:
+    opacity 0.2s,
+    transform 0.2s;
+}
+#aib:hover {
+  opacity: 1;
+  transform: scale(1.06);
+}
+#aib[hidden],
+#aib.away {
+  opacity: 0;
+  pointer-events: none;
+}
+#aib[hidden] {
+  display: none;
+}
+#aib svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#ai {
+  position: fixed;
+  right: 16px;
+  bottom: calc(72px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  width: min(360px, calc(100vw - 24px));
+  max-height: min(540px, 72vh);
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 14px;
+  background: var(--c);
+  border: 1px solid var(--b);
+  border-radius: 20px;
+  box-shadow: 0 12px 40px #0003;
+  animation: rise 0.25s ease both;
+}
+#ai[hidden] {
+  display: none;
+}
+#ai .ah {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+#ai .ah button {
+  width: 36px;
+  height: 36px;
+  min-height: 0;
+  padding: 0;
+  border: 0;
+  background: none;
+  font-size: 22px;
+  line-height: 1;
+}
+#ai #msgs {
+  flex: 1;
+  min-height: 110px;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+#ai .ar {
+  display: flex;
+  gap: 6px;
+}
+#ai .ar input {
+  flex: 1;
+  min-width: 0;
+}
+#ai .ar .pri {
+  width: auto;
+}
+@media (max-width: 800px) {
+  #aib {
+    right: 12px;
+    bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+    width: 42px;
+    height: 42px;
+  }
+  #ai {
+    left: 12px;
+    right: 12px;
+    width: auto;
+    bottom: calc(126px + env(safe-area-inset-bottom, 0px));
+    max-height: 62vh;
+  }
+}
+body.mobile #aib {
+  right: 12px;
+  bottom: calc(76px + env(safe-area-inset-bottom, 0px));
+  width: 42px;
+  height: 42px;
+}
+body.mobile #ai {
+  left: 12px;
+  right: 12px;
+  width: auto;
+  bottom: calc(126px + env(safe-area-inset-bottom, 0px));
+  max-height: 62vh;
+}
+@media (prefers-reduced-motion: reduce) {
+  #aib,
+  #ai {
+    animation: none;
+    transition: none;
+  }
+}

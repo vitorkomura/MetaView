@@ -31,6 +31,8 @@
     "User already registered": "Já existe uma conta com este e-mail.",
   };
   const tr = (e) => {
+    if (e.code == "42501" || /permission denied/i.test(e.message || ""))
+      return "Sem permissão nas tabelas. Rode o supabase/fix-permissoes.sql no SQL Editor do Supabase.";
     if (
       e.code == "42P01" ||
       e.code == "PGRST205" ||
@@ -113,6 +115,10 @@
   };
 
   /* ---------- Envio das mudanças (só o que mudou desde o último envio) ---------- */
+  CL.token = async () => {
+    const { data } = await sb.auth.getSession();
+    return data.session && data.session.access_token;
+  };
   const queue = (CL.queue = () => {
     clearTimeout(timer);
     timer = setTimeout(push, 1000);

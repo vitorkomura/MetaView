@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "private": true,
   "scripts": {
-    "build": "node scripts/build-www.js",
-    "sync": "npm run build && npx cap sync",
+    "build:www": "node scripts/build-www.js",
+    "sync": "npm run build:www && npx cap sync",
     "android": "npm run sync && npx cap open android",
     "ios": "npm run sync && npx cap open ios"
   }

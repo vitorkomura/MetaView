@@ -12,6 +12,7 @@ for (const f of [
   "mobile.css",
   "app.js",
   "extras.js",
+  "assistant.js",
   "config.js",
   "cloud.js",
   "extras.css",

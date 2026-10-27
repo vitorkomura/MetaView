@@ -50,7 +50,13 @@ create table public.events (
 );
 create index events_user_date_idx on public.events (user_id, event_date);
 
--- 5) Segurança: cada pessoa só enxerga e altera os próprios dados (RLS)
+-- 5) Permissões de acesso à API (projetos novos não liberam as tabelas automaticamente)
+grant usage on schema public to anon, authenticated;
+grant select, insert, update, delete
+  on public.profiles, public.habits, public.daily_logs, public.events
+  to authenticated;
+
+-- 6) Segurança: cada pessoa só enxerga e altera os próprios dados (RLS)
 alter table public.profiles enable row level security;
 alter table public.habits enable row level security;
 alter table public.daily_logs enable row level security;
@@ -72,7 +78,7 @@ create policy "registros: so o dono" on public.daily_logs
 create policy "agenda: so o dono" on public.events
   for all using (auth.uid() = user_id) with check (auth.uid() = user_id);
 
--- 6) Cria o perfil automaticamente quando alguém se cadastra
+-- 7) Cria o perfil automaticamente quando alguém se cadastra
 create function public.handle_new_user()
 returns trigger
 language plpgsql

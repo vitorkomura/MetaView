@@ -62,3 +62,6 @@ Hábitos, registros diários (status), agenda, faixas de cor, dias finalizados e
 ### Limites
 - Excluir a conta de login por completo exige uma função no servidor; o botão do app apaga seus dados da nuvem e sai.
 - Este modo só funciona fora do Claude: a página publicada aqui não pode falar com o Supabase.
+
+### Erro "permission denied for table profiles"
+Projetos novos do Supabase não liberam as tabelas para usuários logados automaticamente. Rode o arquivo `supabase/fix-permissoes.sql` no SQL Editor (ou rode o `schema.sql` atualizado em um projeto novo) e tente entrar de novo. As regras RLS continuam impedindo que alguém veja dados de outra pessoa.
