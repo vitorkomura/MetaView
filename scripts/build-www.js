@@ -11,6 +11,10 @@ for (const f of [
   "styles.css",
   "mobile.css",
   "app.js",
+  "extras.js",
+  "config.js",
+  "cloud.js",
+  "extras.css",
   "manifest.webmanifest",
 ]) {
   fs.copyFileSync(path.join(src, f), path.join(out, f));

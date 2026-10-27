@@ -1,0 +1,144 @@
+/* MetaView — estilos dos extras (carrega por último) */
+#bn {
+  align-items: stretch;
+  gap: 2px;
+}
+#bn a,
+#bn .mo {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 3px;
+  min-height: 54px;
+  font-size: 11px;
+  font-weight: 500;
+  color: var(--m);
+  background: none;
+  border: 0;
+  border-radius: 14px;
+  text-decoration: none;
+  padding: 6px 2px;
+}
+#bn a[href]::before,
+#bn a[href]::after {
+  content: none !important;
+}
+#bn svg {
+  width: 22px;
+  height: 22px;
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.8;
+  stroke-linecap: round;
+  stroke-linejoin: round;
+}
+#bn a.on,
+#bn .mo.on {
+  color: var(--ac);
+  background: color-mix(in srgb, var(--ac) 14%, transparent);
+  font-weight: 600;
+}
+#sheet {
+  display: none;
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  max-width: 480px;
+  margin: 0 auto;
+  z-index: 6;
+  background: var(--c);
+  border: 1px solid var(--b);
+  border-radius: 22px 22px 0 0;
+  padding: 16px 16px calc(84px + env(safe-area-inset-bottom, 0px));
+}
+#sheet.open {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 8px;
+  animation: rise 0.3s ease both;
+}
+#sheet a {
+  padding: 14px 6px;
+  text-align: center;
+  border-radius: 14px;
+  background: var(--bg);
+  color: var(--t);
+  text-decoration: none;
+  font-size: 14px;
+}
+#sheet a.on {
+  color: var(--ac);
+  font-weight: 600;
+}
+@media (min-width: 801px) {
+  body:not(.mobile) #sheet {
+    display: none !important;
+  }
+}
+.mcg {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 4px;
+  margin-top: 10px;
+}
+.mh {
+  font-size: 11px;
+  color: var(--m);
+  text-align: center;
+}
+.md {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  padding: 4px 0;
+  min-height: 44px;
+  border-radius: 12px;
+  background: var(--bg);
+  border: 1px solid transparent;
+  font-size: 13px;
+}
+.md.td {
+  border-color: var(--ac);
+}
+.md.sl {
+  background: var(--ac);
+  color: var(--on);
+}
+.md span {
+  display: flex;
+  gap: 2px;
+  height: 5px;
+}
+.md b {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+}
+.toast {
+  position: fixed;
+  z-index: 60;
+  left: 50%;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  transform: translateX(-50%);
+  max-width: 92vw;
+  padding: 12px 18px;
+  border-radius: 14px;
+  background: var(--t);
+  color: var(--bg);
+  font-size: 14px;
+  animation: rise 0.4s ease both;
+}
+.lnk {
+  width: 100%;
+  background: none;
+  border: 0;
+  color: var(--ac);
+  text-decoration: underline;
+  padding: 8px 0 0;
+  min-height: 0;
+}

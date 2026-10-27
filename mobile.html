@@ -33,13 +33,18 @@
     <link rel="stylesheet" href="styles.css" />
     <!-- Ajustes exclusivos do celular (carrega por último) -->
     <link rel="stylesheet" href="mobile.css" />
+    <link rel="stylesheet" href="extras.css" />
   </head>
-  <body>
+  <body class="mobile">
     <nav id="nav" aria-label="Principal"></nav>
     <main id="app" tabindex="-1"></main>
     <nav id="bn" aria-label="Principal"></nav>
     <dialog id="dlg"></dialog>
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script src="app.js"></script>
+    <script src="cloud.js"></script>
+    <script src="extras.js"></script>
     <script>
       // Habilita o uso offline (não roda dentro do app nativo nem em file://)
       if (

@@ -38,6 +38,15 @@ const jset = (k, v) => {
     localStorage.setItem(k, JSON.stringify(v));
   } catch (e) {}
 };
+function uid() {
+  const c = window.crypto;
+  if (c && c.randomUUID) return c.randomUUID();
+  const b = Array.from({ length: 16 }, () => Math.floor(Math.random() * 256));
+  b[6] = (b[6] & 15) | 64;
+  b[8] = (b[8] & 63) | 128;
+  const h = b.map((x) => x.toString(16).padStart(2, "0")).join("");
+  return `${h.slice(0, 8)}-${h.slice(8, 12)}-${h.slice(12, 16)}-${h.slice(16, 20)}-${h.slice(20)}`;
+}
 const LS = (() => {
   try {
     localStorage.setItem("_t", "1");
@@ -51,7 +60,10 @@ let TH = jget(TK, null),
   S = null, // dados da conta logada
   U = null; // conta logada
 const save = () => {
-  if (U && S) jset(DK(U.id), S);
+  if (U && S) {
+    jset(DK(U.id), S);
+    if (window.CL && CL.queue) CL.queue(); // modo nuvem: envia as mudanças ao Supabase
+  }
 };
 function newData(name) {
   const D = {
@@ -71,7 +83,7 @@ function newData(name) {
     ["Dormir no horário planejado", "Sono", "23h", [0, 1, 2, 3, 4, 5, 6]],
   ].forEach((h, i) =>
     D.habits.push({
-      id: "h" + i,
+      id: uid(),
       name: h[0],
       desc: "",
       cat: h[1],
@@ -145,8 +157,8 @@ ${up ? '<label>Nome<input id="au_n" autocomplete="name"></label>' : ""}
 <label>Senha<input id="au_p" type="password" autocomplete="${up ? "new-password" : "current-password"}"></label>
 ${up ? '<label>Confirmar senha<input id="au_c" type="password" autocomplete="new-password"></label>' : ""}
 <p class="err" id="au_err" role="alert">${LS ? "" : "Este ambiente bloqueia o armazenamento do navegador: a conta não será mantida ao recarregar."}</p>
-<button class="pri" id="au_go" data-a="auth">${up ? "Criar conta" : "Entrar"}</button></div>
-<p class="m" style="font-size:13px">As contas ficam salvas neste navegador. Cada pessoa tem seus próprios hábitos, metas e registros.</p></div>`;
+<button class="pri" id="au_go" data-a="auth">${up ? "Criar conta" : "Entrar"}</button>${!up && window.MV_CFG ? '<button class="lnk" data-x="forgot">Esqueci minha senha</button>' : ""}</div>
+<p class="m" style="font-size:13px">${window.MV_CFG ? "Seus dados ficam na nuvem e acompanham sua conta em qualquer aparelho." : "As contas ficam salvas neste navegador. Cada pessoa tem seus próprios hábitos, metas e registros."}</p></div>`;
 }
 /* Transição de boas-vindas (após entrar ou ao abrir o app já logado) */
 function welcome() {
@@ -614,8 +626,8 @@ function evolucao() {
 }
 function config() {
   return `<h1>Configurações</h1><div class="card"><label>Seu nome<input data-c="name" value="${esc(S.name)}"></label><h2 style="margin-top:18px">Faixas de cor (% mínimo)</h2><div class="row">${["Verde escuro", "Verde médio", "Verde claro", "Âmbar"].map((l, i) => `<label>${l}<input type="number" min="1" max="100" data-c="t${i}" value="${S.t[i]}"></label>`).join("")}</div><p class="m">Abaixo da última faixa, o dia fica vermelho. Dias sem registro nunca contam como zero.</p><p class="err" id="te"></p></div>
-<div class="card"><h2>Conta</h2><p class="m">${esc(U.name)} · ${esc(U.email)}</p><button data-a="logout">Sair da conta</button> <button class="dng" data-a="delacc">Excluir conta</button></div>
-<div class="card"><h2>Dados</h2><p class="m">Os dados desta conta ficam salvos neste navegador. Para acessar de outros aparelhos é preciso um banco na nuvem (Supabase).</p><button data-a="exp">Exportar JSON</button> <button class="dng" data-a="reset">Apagar dados</button></div>`;
+<div class="card"><h2>Conta</h2><p class="m">${esc(U.name)} · ${esc(U.email)}</p><button data-a="logout">Sair da conta</button> <button class="dng" data-a="delacc">${window.MV_CFG ? "Apagar meus dados" : "Excluir conta"}</button></div>
+<div class="card"><h2>Dados</h2><p class="m">${window.MV_CFG ? "Os dados desta conta ficam na nuvem (Supabase) e acompanham você em qualquer aparelho." : "Os dados desta conta ficam salvos neste navegador. Para acessar de outros aparelhos é preciso um banco na nuvem (Supabase)."}</p><button data-a="exp">Exportar JSON</button> <button class="dng" data-a="reset">Apagar dados</button></div>`;
 }
 const R = {
   visao: ["Visão geral", visao],
@@ -786,7 +798,7 @@ document.addEventListener("click", (e) => {
       },
       h = S.habits.find((x) => x.id == v);
     if (h) Object.assign(h, o);
-    else S.habits.push({ id: "h" + Date.now(), paused: 0, ...o });
+    else S.habits.push({ id: uid(), paused: 0, ...o });
     save();
     $("#dlg").close();
     go();
@@ -859,7 +871,7 @@ document.addEventListener("keydown", (e) => {
   }
 });
 // Retoma a sessão salva (se houver) e desenha a tela
-{
+if (!window.MV_CFG) {
   const sid = jget(SK, null),
     u = Object.values(users()).find((x) => x.id == sid);
   if (u) signIn(u);

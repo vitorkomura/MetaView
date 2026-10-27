@@ -1,11 +1,15 @@
 /* MetaView — service worker: depois da primeira visita o app abre mesmo sem internet.
    Ao publicar uma nova versão dos arquivos, troque o número em CACHE (v1 -> v2). */
-const CACHE = "metaview-v1";
+const CACHE = "metaview-v4";
 const ARQUIVOS = [
   "./mobile.html",
   "./styles.css",
   "./mobile.css",
   "./app.js",
+  "./config.js",
+  "./cloud.js",
+  "./extras.js",
+  "./extras.css",
   "./manifest.webmanifest",
   "./icons/icon-192.png",
   "./icons/icon-512.png",
@@ -37,7 +41,9 @@ self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
   const url = new URL(req.url);
-  const fonte = /(^|\.)(googleapis|gstatic)\.com$/.test(url.hostname);
+  const fonte = /(^|\.)(googleapis|gstatic)\.com$|(^|\.)jsdelivr\.net$/.test(
+    url.hostname,
+  );
   if (url.origin !== self.location.origin && !fonte) return;
   e.respondWith(
     caches.match(req, { ignoreSearch: true }).then((hit) => {

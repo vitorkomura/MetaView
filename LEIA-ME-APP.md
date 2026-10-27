@@ -10,7 +10,7 @@ O app abre em tela cheia, tem ícone próprio e funciona offline depois da prime
 
 1. Publique a pasta em uma hospedagem gratuita com HTTPS (por exemplo Netlify Drop, GitHub Pages ou Vercel).
 2. No celular, abra `https://SEU-ENDERECO/mobile.html`.
-3. **Android (Chrome):** menu ⋮ > "Instalar app" ou "Adicionar à tela inicial".
+3. **Android (Chrome):** menu ⋮ > "Instalar app"    ou "Adicionar à tela inicial".
 4. **iPhone (Safari):** botão Compartilhar > "Adicionar à Tela de Início".
 
 Os nomes dos menus podem variar conforme a versão do navegador.
