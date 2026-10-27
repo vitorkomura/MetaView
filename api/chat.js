@@ -116,7 +116,7 @@ module.exports = async (req, res) => {
     t = setTimeout(() => ctl.abort(), 25000);
   try {
     const g = await fetch(
-      `https://generativelanguage.googleapis.com/v1beta/models/${encodeURIComponent(MODEL)}:generateContent`,
+      `https://generativelanguage.googleapis.com/v1beta/models/gemini-2.5-flash:generateContent`,
       {
         method: "POST",
         headers: { "Content-Type": "application/json", "x-goog-api-key": gk },
