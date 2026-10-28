@@ -39,3 +39,9 @@ Percentuais dos últimos 7 dias, nomes dos hábitos e categorias, taxa de cada u
 
 ## Diagnóstico rápido
 Abra `https://SEU-SITE.vercel.app/api/chat?diag=1`. A página mostra se a chave foi encontrada, com qual nome de variável, se o formato parece correto (chaves do Google começam com `AIza`) e quais modelos serão tentados. Ela nunca mostra a chave.
+
+## Respostas lentas
+- **Streaming:** a resposta agora aparece aos poucos, palavra por palavra, em vez de só no final.
+- **Raciocínio mínimo:** alguns modelos novos do Gemini "pensam" antes de responder e isso leva vários segundos. O servidor pede o raciocínio mínimo e tem um plano B se o modelo não aceitar esse pedido.
+- **Modelo mais rápido:** crie a variável `GEMINI_MODEL` na Vercel com `gemini-3.5-flash-lite` (versão Lite, que já vem sem raciocínio por padrão e é mais barata) e faça um novo deploy. Se o nome mudar, veja os modelos atuais no Google AI Studio.
+- **Limites:** o servidor desiste se o Gemini não começar a responder em 20 segundos, ou se a resposta passar de 50 segundos.

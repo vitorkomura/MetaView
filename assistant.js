@@ -137,11 +137,12 @@
     chat.push({ role: "assistant", text: "Pensando…", pending: true });
     busy = true;
     msgs();
-    let out;
+    let m = null,
+      out = null;
     try {
       const token = await CL.token();
       let hist = chat
-        .filter((m) => !m.pending && !m.err)
+        .filter((x) => !x.pending && !x.err)
         .slice(-10)
         .map(({ role, text }) => ({ role, text }));
       while (hist.length && hist[0].role != "user") hist.shift();
@@ -157,26 +158,61 @@
           nome: first(),
         }),
       });
-      const j = await r.json().catch(() => ({}));
-      out =
-        r.ok && j.reply
-          ? { role: "assistant", text: j.reply }
-          : {
-              role: "assistant",
-              text:
-                (j.error || "Não consegui responder agora.") +
-                (j.detail ? "\n(" + j.detail + ")" : ""),
-              err: 1,
-            };
+      const ct =
+        (r.headers && r.headers.get && r.headers.get("content-type")) || "";
+      if (
+        r.ok &&
+        !ct.includes("application/json") &&
+        r.body &&
+        r.body.getReader
+      ) {
+        // resposta em partes: o texto aparece enquanto o Gemini escreve
+        const rd = r.body.getReader(),
+          dec = new TextDecoder();
+        let acc = "";
+        for (;;) {
+          const { done, value } = await rd.read();
+          if (done) break;
+          acc += dec.decode(value, { stream: true });
+          if (!m) {
+            chat.pop();
+            m = { role: "assistant", text: acc };
+            chat.push(m);
+          } else m.text = acc;
+          msgs();
+        }
+        if (!m)
+          out = {
+            role: "assistant",
+            text: "Não consegui gerar uma resposta. Tente reformular.",
+            err: 1,
+          };
+      } else {
+        const j = await r.json().catch(() => ({}));
+        out =
+          r.ok && j.reply
+            ? { role: "assistant", text: j.reply }
+            : {
+                role: "assistant",
+                text:
+                  (j.error || "Não consegui responder agora.") +
+                  (j.detail ? "\n(" + j.detail + ")" : ""),
+                err: 1,
+              };
+      }
     } catch (e) {
-      out = {
-        role: "assistant",
-        text: "Sem conexão com o assistente. Tente novamente.",
-        err: 1,
-      };
+      if (m) m.text += "\n\n(A resposta foi interrompida. Tente novamente.)";
+      else
+        out = {
+          role: "assistant",
+          text: "Sem conexão com o assistente. Tente novamente.",
+          err: 1,
+        };
     }
-    chat.pop();
-    chat.push(out);
+    if (out) {
+      chat.pop();
+      chat.push(out);
+    }
     busy = false;
     msgs();
   }
