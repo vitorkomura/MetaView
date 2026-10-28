@@ -163,7 +163,9 @@
           ? { role: "assistant", text: j.reply }
           : {
               role: "assistant",
-              text: j.error || "Não consegui responder agora.",
+              text:
+                (j.error || "Não consegui responder agora.") +
+                (j.detail ? "\n(" + j.detail + ")" : ""),
               err: 1,
             };
     } catch (e) {
